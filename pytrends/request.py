@@ -256,7 +256,7 @@ class TrendReq(object):
         if self.geo == '':
             self.interest_by_region_widget['request'][
                 'resolution'] = resolution
-        elif self.geo == 'US' and resolution in ['DMA', 'CITY', 'REGION']:
+        elif 'US' in self.geo and resolution in ['DMA', 'CITY', 'REGION']:
             self.interest_by_region_widget['request'][
                 'resolution'] = resolution
 
@@ -280,6 +280,8 @@ class TrendReq(object):
         if (df.empty):
             return df
 
+        if 'geoCode' not in df.columns:
+            df['geoCode'] = df.coordinates
         # rename the column with the search keyword
         df = df[['geoName', 'geoCode', 'value']].set_index(
             ['geoName']).sort_index()
